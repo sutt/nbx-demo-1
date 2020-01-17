@@ -1,0 +1,80 @@
+from cpr import nbx2
+import numpy
+from matplotlib import pyplot as plt
+
+import numpy
+N_SOCKS = 365
+N = 10_000
+starting_socks = 2* [i for i in range(N_SOCKS)]
+n_pulls = []
+
+for n in range(N):
+    
+    socks = starting_socks.copy()
+    pulled = []
+    
+    for pull_i in range(N_SOCKS + 1):
+        
+        ind = numpy.random.randint(0, len(socks) - 1)
+        
+        _sock = socks.pop(ind)
+        
+        if _sock in pulled:
+            n_pulls.append(pull_i + 1)
+            break
+        else:
+            pulled.append(_sock)
+            
+print(f'simulations run {len(n_pulls)}')
+print(f'mean of number of pull {numpy.mean(n_pulls)}')
+
+
+from matplotlib import pyplot as plt
+plt.hist(n_pulls, bins=50)
+plt.vlines(numpy.mean(n_pulls),0,600)
+plt.title(f'Historgram of n_pulls for {N_SOCKS} socks');
+plt.show()
+
+
+
+pcts = [73, 58, 32]
+N = 1_000
+bingos = []
+b_bingo_break = False
+
+for n_people in range(1,N):
+    
+    matches = []
+    for pct in pcts:
+
+        numerator =   int(pct * .01 * n_people)
+        denominator = n_people
+            
+        if int(100 * numerator / denominator) == pct:
+            matches.append(numerator)
+        elif int(100 * (numerator + 1) / denominator) == pct:
+            # this is the key additional LOC,
+            # do we only need to add one, or add 
+            # multiple cushion values?
+            matches.append(numerator + 1)
+        else:
+            break
+
+    if len(matches) == 3:
+        
+        if b_bingo_break:
+            print(f'n_people: {n_people}, votes: {matches}')
+            break
+        else:
+            bingos.append([n_people, matches.copy()])
+
+# check: verify the solver worked
+check = [ (n_people, [int(100*e/n_people) for e in matches])
+          for n_people, matches in bingos]
+
+print(f'number of solutions: {len(bingos)}')
+print('first three: ', *bingos[:3], sep='\n')
+print('last three: ', *bingos[-3:], sep='\n')
+
+print('first three: ', *check[:3], sep='\n')
+print('last three: ', *check[-3:], sep='\n')
