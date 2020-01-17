@@ -79,7 +79,11 @@ def give_answer(fn_nb, term='give_answer('):
     if not(ec): raise Exception()
 
     # Get Answer from teacher notebook
-    nb_json = json.load(open(fn_nb, 'r'))
+    try:
+        with open(fn_nb, 'r', encoding='utf-8') as f:
+            nb_json = json.load(f)
+    except Exception as e:
+            raise Exception(f'''unable to read current notebook; encoding err? {e}''')
 
     nb_index = find_answer_index(nb_json['cells'], term=term)
     
@@ -130,9 +134,10 @@ def get_answer(fn_nb, term='get_answer', b_replace=True):
     
     # Write answer into notbook
     try:
-        nb_json = json.load(open(fn_nb, 'r'))
-    except:
-        raise Exception(f'unable to read current notebook: {fn_nb}')
+        with open(fn_nb, 'r', encoding='utf-8') as f:
+            nb_json = json.load(f)
+    except Exception as e:
+        raise Exception(f'unable to read current notebook: {fn_nb}, {e}')
 
     try:
         nb_index = find_answer_index(nb_json['cells'], term=term)

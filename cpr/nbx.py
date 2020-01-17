@@ -33,7 +33,7 @@ from .utils import get_nb_name
 
 
 def receive_answer( nb_name=None, 
-                    remote_name='local',
+                    remote_name='origin',
                     b_log=False, 
                     b_replace=False,
                     b_save=False
@@ -65,7 +65,7 @@ def receive_answer( nb_name=None,
 
 
 def send_answer( nb_name=None,
-                 remote_name='local',
+                 remote_name='origin',
                  b_log=False,
                  ):
     '''
