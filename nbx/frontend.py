@@ -7,50 +7,12 @@ except:
     print('unable to import from `IPython` package, this extension will note work')
     raise ImportError()
 
-# Documentation + Tips ---------------
 '''
-TODOS
+    Module for working with notebook as DOM object / js methods
 
-[x] save functionality
-[ ] laod js from templates
-    -> a separate file for each js function?
-    -> how to set flag variables in python string?
-
-Documentation & Tips:
-
-+ getting notebooks in <root>/misc/book to import <root>/cpr:
-
-import sys
-sys.path.append('../../')
-from IPython import display
-from IPython.display import Javascript
-%reload_ext autoreload
-%autoreload 2
-import cpr.cpr as cpr
 
 '''
 
-
-    
-def set_nbname_global():
-    '''
-         set NBX_NBNAME_GLOBAL to the string of the notebook's name
-
-         this will only occur/ be available to python kernel after all 
-         input code has run and the cell's output has returned.
-
-         call this on module load to set nbname for future functions default
-    '''
-    
-    js = '''
-    var nbName = IPython.notebook.notebook_name;
-    var cmd = "NBX_NBNAME_GLOBAL = '" + nbName + "'";
-    IPython.notebook.kernel.execute(cmd);
-    console.log(cmd);
-    '''
-    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
-    display(Javascript(data=js))
-    
     
 
 def reload_nb(  b_save=False,

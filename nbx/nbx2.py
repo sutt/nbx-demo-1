@@ -4,14 +4,28 @@ from IPython.display import display, Javascript
 from .merge import get_answer
 from .merge import give_answer
 
-from .cpr import reload_nb
-from .cpr import set_nbname_global
+from .frontend import reload_nb
 
 from .gitcomm import pull_answer
 from .gitcomm import push_answer
 
 from .utils import get_nb_name
 
+'''
+     Module for v2 functionality on nbx. Additons include:
+
+        - save before send/receive
+        - can conceivably solve issues:
+            - multi notebook
+            - multi cell containing target text
+            - notebook not at root of git
+            - notebook not at root of jupyter server
+
+    These methods are wrapped completely in js 
+    and execute python only thru js-call to Ipyuthon kernel 
+    so they are more difficult to code / work with in IDE.
+
+'''
 
 class ImportClass:
 
@@ -30,6 +44,7 @@ class ImportClass:
     def gitcomm_push_answer():
         push_answer()
 
+    @staticmethod
     def gitcomm_pull_answer():
         pull_answer(remote_name='local', 
                 b_log=False,

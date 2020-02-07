@@ -2,12 +2,11 @@ import os
 import json
 
 '''
-TODO
-
-[ ] force remote version for merge
+    Module to exchange the answer cell from notebook into <--> .nbx
 '''
-CELLS_DIR = '.cpr'
-CELLS_JSON = os.path.join(CELLS_DIR, 'cells.json')
+
+CELLS_DIR = '.nbx'
+CELLS_JSON = os.path.join(CELLS_DIR, 'master.json')
 
 
 def check_directory(cells_dir=CELLS_DIR):
@@ -28,6 +27,7 @@ def check_file(cells_json=CELLS_JSON):
 def find_answer_index(cell_list,
                       term,
                       multi_index_strat = 'last',
+                      debug=False
                       ):
 
     ind_terms = [i for i, cell in enumerate(cell_list)
@@ -40,8 +40,10 @@ def find_answer_index(cell_list,
         multi_ind = -1
     
     if len(ind_terms) < 1:
-        print(cell_list)
-        raise Exception('failed to find index of cell, maybe save notebook manually? ')
+        print('failed to find index of answer cell: save notebook with ctrl+s and try again')
+        if debug:
+            print(cell_list)
+            raise Exception('failed to find index of cell: save notebook with ctrl+s and try again')
     
     return ind_terms[multi_ind]
 
@@ -52,7 +54,7 @@ def insert_cell(cell_index,
                 b_replace=True,
                ):
     '''
-        
+
     '''
     new_json = nb_json.copy()
     
@@ -89,7 +91,7 @@ def give_answer(fn_nb, term='give_answer('):
     
     nb_cell = nb_json['cells'][nb_index - 1]   # take cell above
 
-    # Write answer cell into cells.json intermediate representation
+    # Write answer cell into master.json intermediate representation
     ec = check_file()
     if ec:
         try:
@@ -115,10 +117,9 @@ def get_answer(fn_nb, term='get_answer', b_replace=True):
          
          b_replace (bool) - overwrite cell with get_answer() code
     '''
-    ec = check_directory()
-    if not(ec): raise Exception(f'no answer directory {CELLS_DIR}')
+    
     ec = check_file()
-    if not(ec): raise Exception(f'no answer json {CELLS_JSON}')
+    if not(ec): raise Exception(f'no answer json {CELLS_JSON} ; there may be no answers pushed to the remote yet.')
     
     # Read-in Answers
     try:

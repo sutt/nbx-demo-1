@@ -9,13 +9,52 @@ except:
     raise ImportError()
 
 '''
-TODOs
-
-[ ] some git subprocess commands
-
+    Module to hold one-off and deprecated code.
 
 '''
 
+# Deprecated ------------------------------------
+
+def set_nbname_global():
+    '''
+         set NBX_NBNAME_GLOBAL to the string of the notebook's name
+
+         this will only occur/ be available to python kernel after all 
+         input code has run and the cell's output has returned.
+
+         call this on module load to set nbname for future functions default
+    '''
+    
+    js = '''
+    var nbName = IPython.notebook.notebook_name;
+    var cmd = "NBX_NBNAME_GLOBAL = '" + nbName + "'";
+    IPython.notebook.kernel.execute(cmd);
+    console.log(cmd);
+    '''
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    display(Javascript(data=js))
+
+def _leading_underscore_func():
+    pass
+    
+# these don't work: it adds the global to the __main__ scope which 
+# is not shareable across modules
+
+# call this when module is loaded to get NBX_NBNAME_GLOBAL 
+# set in __main__ context from js
+# set_nbname_global()
+
+# def nbname_from_global(nb_name):
+#     ''' pull nbname established in set_nbname_global
+#         unless nb_name is specificied by user
+#     '''
+#     if nb_name is not None:
+#         return nb_name
+#     try:
+#         global NBX_NBNAME_GLOBAL
+#         return NBX_NBNAME_GLOBAL
+#     except:
+#         raise Exception('cannot find NBX_NBNAME_GLOBAL')
 
 # JS Functionality ----------------------
 

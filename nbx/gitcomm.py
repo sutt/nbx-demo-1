@@ -12,6 +12,9 @@ TODOs
 
 '''
 
+CELLS_DIR = '.nbx'
+CELLS_JSON = os.path.join(CELLS_DIR, 'master.json')
+
 def cmd_line_strip(cmd):
     ''' 
          return list of strings: - one per line of command string 
@@ -53,14 +56,16 @@ def find_root_git():
     pass
     #TODO
 
-def push_answer(remote_name='local', b_log=False):
+def push_answer(remote_name='origin', b_log=False):
     '''
-         run `git add, commit, push`
+         run `git add, commit, push` 
+
+         only on .nbx/master.json
 
          note: commit message must have no spaces right now
     '''
     cmd = f'''
-    git add .cpr/cells.json
+    git add {CELLS_JSON}
     git commit -m 'push-answer-script'
     git push {remote_name} master
     git status
@@ -94,7 +99,7 @@ def push_answer(remote_name='local', b_log=False):
             
 
 
-def pull_answer(remote_name='local', b_log=False):
+def pull_answer(remote_name='origin', b_log=False):
     '''
          run `git pull`
     '''
